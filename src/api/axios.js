@@ -7,6 +7,6 @@ export const axiosClient = axios.create({
     "Access-Control-Allow-Origin": "*",
     Authorization: !!localStorage.getItem("token")
       ? `Bearer ${localStorage.getItem("token")}`
-      : undefined,
+      : "",
   },
 });

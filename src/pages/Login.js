@@ -12,13 +12,19 @@ import {
 } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { login } from "../api/auth";
+import { axiosClient } from "../api/axios";
+import { useState } from "react";
 
 export const Login = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const onFinish = async (values) => {
+    setLoading(true);
     try {
-      const { data } = await login("/api/auth/login", values);
+      const { data } = await axiosClient.post("/api/auth/login", {
+        email: values.email,
+        password: values.password,
+      });
       localStorage.setItem("isAuth", true);
       localStorage.setItem("token", data.token);
       navigate("/");
@@ -38,12 +44,14 @@ export const Login = () => {
         ),
         duration: 5,
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
-      <Typography.Title style={{ marginTop: "5rem" }}>
+      <Typography.Title style={{ marginTop: "5rem", textAlign: "center" }}>
         Book Manament Login Page
       </Typography.Title>
       <Form
@@ -106,6 +114,7 @@ export const Login = () => {
                 type="primary"
                 htmlType="submit"
                 className="login-form-button"
+                loading={loading}
               >
                 Log in
               </Button>
