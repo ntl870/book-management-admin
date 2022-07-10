@@ -1,6 +1,6 @@
 import { PrivateLayout } from "./PrivateLayout";
 import { Home } from "../pages/Home";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { DashboardFilled, BookOutlined, PlusOutlined } from "@ant-design/icons";
 import { NewBook } from "../pages/NewBook";
 import { EditBook } from "../pages/EditBook";
@@ -36,6 +36,7 @@ export const PrivateRoute = () => {
             <Route key={index} path={route.path} element={route.element} />
           );
         })}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </PrivateLayout>
   );
