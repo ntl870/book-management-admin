@@ -240,10 +240,25 @@ export const EditBook = () => {
             >
               <Upload
                 onChange={(e) => {
-                  upLoadFile(
+                  const uploadTask = upLoadFile(
                     e.fileList[0].originFileObj,
                     `books/content/${uuid}/${e.fileList[0].name}`
-                  ).then((url) => setBook(url));
+                  );
+
+                  uploadTask.on(
+                    "state_changed",
+                    null,
+                    (error) => {
+                      alert(error);
+                    },
+                    () => {
+                      getDownloadURL(uploadTask.snapshot.ref).then(
+                        (downloadURL) => {
+                          setBook(downloadURL);
+                        }
+                      );
+                    }
+                  );
                 }}
                 onRemove={() => setBook("")}
               >
