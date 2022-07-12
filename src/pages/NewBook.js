@@ -33,6 +33,7 @@ export const NewBook = () => {
       setLoading(true);
       await addNewBook({
         ...values,
+        book: undefined,
         categoryId: values.categories,
         image: coverImage.url,
         downloadUrl: book,
@@ -80,7 +81,8 @@ export const NewBook = () => {
   };
 
   const uuid = useMemo(() => generateUUID(), []);
-
+  console.log(coverImage);
+  console.log(book);
   return (
     <>
       <Form
@@ -197,10 +199,24 @@ export const NewBook = () => {
             >
               <Upload
                 onChange={(e) => {
-                  upLoadFile(
+                  const uploadTask = upLoadFile(
                     e.fileList[0].originFileObj,
                     `books/content/${uuid}/${e.fileList[0].name}`
-                  ).then((url) => setBook(url));
+                  );
+                  uploadTask.on(
+                    "state_changed",
+                    null,
+                    (error) => {
+                      alert(error);
+                    },
+                    () => {
+                      getDownloadURL(uploadTask.snapshot.ref).then(
+                        (downloadURL) => {
+                          setBook(downloadURL);
+                        }
+                      );
+                    }
+                  );
                 }}
               >
                 <Button icon={<UploadOutlined />}>Upload</Button>

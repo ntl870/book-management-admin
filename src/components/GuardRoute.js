@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function GuardRoute({ isPrivate = false, children }) {
+const GuardRoute = ({ isPrivate = false, children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,6 +21,6 @@ function GuardRoute({ isPrivate = false, children }) {
   }, []);
 
   return children;
-}
+};
 
 export default GuardRoute;
